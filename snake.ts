@@ -12,11 +12,15 @@ let snakeY = blockSize * 5;
 
 // Function to update canvas content
 const update = () => {
-  context!.fillStyle = "black";
-  context!.fillRect(0, 0, board!.width, board!.height);
+  if (context && board) {
+    // Clear the canvas
+    context.fillStyle = "black";
+    context.fillRect(0, 0, board.width, board.height);
 
-  context!.fillStyle = "lime";
-  context?.fillRect(snakeX, snakeY, blockSize, blockSize);
+    // Draw the snake
+    context.fillStyle = "lime";
+    context.fillRect(snakeX, snakeY, blockSize, blockSize);
+  }
 };
 
 // Window onload event handler

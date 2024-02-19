@@ -9,10 +9,14 @@ var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
 // Function to update canvas content
 var update = function () {
-    context.fillStyle = "black";
-    context.fillRect(0, 0, board.width, board.height);
-    context.fillStyle = "lime";
-    context === null || context === void 0 ? void 0 : context.fillRect(snakeX, snakeY, blockSize, blockSize);
+    if (context && board) {
+        // Clear the canvas
+        context.fillStyle = "black";
+        context.fillRect(0, 0, board.width, board.height);
+        // Draw the snake
+        context.fillStyle = "lime";
+        context.fillRect(snakeX, snakeY, blockSize, blockSize);
+    }
 };
 // Window onload event handler
 window.onload = function () {
