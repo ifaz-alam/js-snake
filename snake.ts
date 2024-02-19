@@ -29,6 +29,9 @@ const gameLoop = () => {
     context.fillStyle = "lime";
     context.fillRect(snakeX, snakeY, blockSize, blockSize);
 
+    if (snakeX === foodX && snakeY === foodY) {
+      updateFoodPosition();
+    }
     // Draw the food
     context.fillStyle = "red";
     context.fillRect(foodX, foodY, blockSize, blockSize);
@@ -54,23 +57,23 @@ const updateFoodPosition = () => {
 
 /**
  * Updates the global variables representing the direction vector of the snake based on the recently pressed key.
- * Note: The positive y-axis is defined as downwards, and negative y-axis is defined as upwards.
+ * Ensures that the snake cannot move in the opposite direction of its current movement.
+ * Note: The positive y-axis is defined as downwards, and the negative y-axis is defined as upwards.
  * @param e The keyup event containing information about the recently pressed key.
  */
 const updateSnakeDirection = (e: { code: string }): void => {
-  switch (e.code) {
-    case "ArrowUp":
-      [directionX, directionY] = [0, -1]; // Move up
-      break;
-    case "ArrowDown":
-      [directionX, directionY] = [0, 1]; // Move down
-      break;
-    case "ArrowLeft":
-      [directionX, directionY] = [-1, 0]; // Move left
-      break;
-    case "ArrowRight":
-      [directionX, directionY] = [1, 0]; // Move right
-      break;
+  if (e.code === "ArrowUp" && directionY != 1) {
+    directionX = 0;
+    directionY = -1;
+  } else if (e.code === "ArrowDown" && directionY != -1) {
+    directionX = 0;
+    directionY = 1;
+  } else if (e.code === "ArrowLeft" && directionX != 1) {
+    directionX = -1;
+    directionY = 0;
+  } else if (e.code === "ArrowRight" && directionX != -1) {
+    directionX = 1;
+    directionY = 0;
   }
 };
 

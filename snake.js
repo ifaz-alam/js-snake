@@ -23,6 +23,9 @@ var gameLoop = function () {
         snakeY += directionY * blockSize;
         context.fillStyle = "lime";
         context.fillRect(snakeX, snakeY, blockSize, blockSize);
+        if (snakeX === foodX && snakeY === foodY) {
+            updateFoodPosition();
+        }
         // Draw the food
         context.fillStyle = "red";
         context.fillRect(foodX, foodY, blockSize, blockSize);
@@ -44,24 +47,26 @@ var updateFoodPosition = function () {
 };
 /**
  * Updates the global variables representing the direction vector of the snake based on the recently pressed key.
- * Note: The positive y-axis is defined as downwards, and negative y-axis is defined as upwards.
+ * Ensures that the snake cannot move in the opposite direction of its current movement.
+ * Note: The positive y-axis is defined as downwards, and the negative y-axis is defined as upwards.
  * @param e The keyup event containing information about the recently pressed key.
  */
 var updateSnakeDirection = function (e) {
-    var _a, _b, _c, _d;
-    switch (e.code) {
-        case "ArrowUp":
-            _a = [0, -1], directionX = _a[0], directionY = _a[1]; // Move up
-            break;
-        case "ArrowDown":
-            _b = [0, 1], directionX = _b[0], directionY = _b[1]; // Move down
-            break;
-        case "ArrowLeft":
-            _c = [-1, 0], directionX = _c[0], directionY = _c[1]; // Move left
-            break;
-        case "ArrowRight":
-            _d = [1, 0], directionX = _d[0], directionY = _d[1]; // Move right
-            break;
+    if (e.code === "ArrowUp" && directionY != 1) {
+        directionX = 0;
+        directionY = -1;
+    }
+    else if (e.code === "ArrowDown" && directionY != -1) {
+        directionX = 0;
+        directionY = 1;
+    }
+    else if (e.code === "ArrowLeft" && directionX != 1) {
+        directionX = -1;
+        directionY = 0;
+    }
+    else if (e.code === "ArrowRight" && directionX != -1) {
+        directionX = 1;
+        directionY = 0;
     }
 };
 // Window onload event handler
