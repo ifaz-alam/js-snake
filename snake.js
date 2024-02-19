@@ -7,8 +7,11 @@ var context;
 // Snake Information
 var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
-// Function to update canvas content
-var update = function () {
+// Food Information
+var foodX = blockSize * 10;
+var foodY = blockSize * 10;
+// Function to update canvas content (main game loop)
+var gameLoop = function () {
     if (context && board) {
         // Clear the canvas
         context.fillStyle = "black";
@@ -16,6 +19,26 @@ var update = function () {
         // Draw the snake
         context.fillStyle = "lime";
         context.fillRect(snakeX, snakeY, blockSize, blockSize);
+        // Draw the food
+        updateFoodPos();
+        context.fillStyle = "red";
+        context.fillRect(foodX, foodY, blockSize, blockSize);
+    }
+};
+/**
+ * A helper function to update the position of the food
+ * If the potential position overlaps with the snake head, the food position is recalculate until this is not the case.
+ */
+var updateFoodPos = function () {
+    var newFoodX = blockSize * Math.floor(Math.random() * cols);
+    var newFoodY = blockSize * Math.floor(Math.random() * rows);
+    if (newFoodX == foodX && newFoodY == foodY) {
+        newFoodX = blockSize * Math.floor(Math.random() * cols);
+        newFoodY = blockSize * Math.floor(Math.random() * rows);
+    }
+    else {
+        foodX = newFoodX;
+        foodY = newFoodY;
     }
 };
 // Window onload event handler
@@ -25,6 +48,6 @@ window.onload = function () {
         board.height = rows * blockSize;
         board.width = cols * blockSize;
         context = board.getContext("2d");
-        update();
+        gameLoop();
     }
 };
