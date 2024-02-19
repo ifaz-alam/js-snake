@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "watch:ts": "tsc --watch snake.ts",
+    "watch:js": "nodemon dist/index.js"
+  }
+}
