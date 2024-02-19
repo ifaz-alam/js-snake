@@ -7,7 +7,7 @@ var context;
 // Snake Information
 var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
-var snakeBody = [];
+var snakeBody = []; // Last element represents Tail position
 var directionX = 1;
 var directionY = 0;
 // Food Information
@@ -15,16 +15,26 @@ var foodX = blockSize * 10;
 var foodY = blockSize * 10;
 // Function to update canvas content (main game loop)
 var gameLoop = function () {
+    console.log(snakeBody);
     if (context && board) {
         // Clear the canvas
         context.fillStyle = "black";
         context.fillRect(0, 0, board.width, board.height);
+        // Update the positions of the snake's body segments to follow the movement of the snake's head
+        for (var i = snakeBody.length - 1; i >= 0; i--) {
+            if (i === 0) {
+                snakeBody[0] = [snakeX, snakeY];
+            }
+            else {
+                snakeBody[i] = snakeBody[i - 1];
+            }
+        }
         // Draw the snake's head
         snakeX += directionX * blockSize;
         snakeY += directionY * blockSize;
         context.fillStyle = "lime";
         context.fillRect(snakeX, snakeY, blockSize, blockSize);
-        // Draw the snake's body
+        // Render Snake body from its upper body down to its tail
         for (var i = 0; i < snakeBody.length; i++) {
             context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
         }
@@ -40,15 +50,12 @@ var gameLoop = function () {
 };
 /**
  * A helper function to update the position of the food
- * If the potential position overlaps with the snake head, the food position is recalculate until this is not the case.
  */
 var updateFoodPosition = function () {
     var newFoodX;
     var newFoodY;
-    do {
-        newFoodX = blockSize * Math.floor(Math.random() * cols);
-        newFoodY = blockSize * Math.floor(Math.random() * rows);
-    } while (newFoodX === snakeX && newFoodY === snakeY);
+    newFoodX = blockSize * Math.floor(Math.random() * cols);
+    newFoodY = blockSize * Math.floor(Math.random() * rows);
     foodX = newFoodX;
     foodY = newFoodY;
 };

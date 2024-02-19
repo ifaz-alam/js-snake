@@ -9,7 +9,7 @@ let context: CanvasRenderingContext2D | null;
 // Snake Information
 let snakeX: number = blockSize * 5;
 let snakeY: number = blockSize * 5;
-let snakeBody: number[][] = [];
+let snakeBody: number[][] = []; // Last element represents Tail position
 let directionX: number = 1;
 let directionY: number = 0;
 
@@ -19,10 +19,20 @@ let foodY: number = blockSize * 10;
 
 // Function to update canvas content (main game loop)
 const gameLoop = () => {
+  console.log(snakeBody);
   if (context && board) {
     // Clear the canvas
     context.fillStyle = "black";
     context.fillRect(0, 0, board.width, board.height);
+
+    // Update the positions of the snake's body segments to follow the movement of the snake's head
+    for (let i = snakeBody.length - 1; i >= 0; i--) {
+      if (i === 0) {
+        snakeBody[0] = [snakeX, snakeY];
+      } else {
+        snakeBody[i] = snakeBody[i - 1];
+      }
+    }
 
     // Draw the snake's head
     snakeX += directionX * blockSize;
@@ -30,10 +40,11 @@ const gameLoop = () => {
     context.fillStyle = "lime";
     context.fillRect(snakeX, snakeY, blockSize, blockSize);
 
-    // Draw the snake's body
+    // Render Snake body from its upper body down to its tail
     for (let i = 0; i < snakeBody.length; i++) {
       context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
     }
+
     // Consume food
     if (snakeX === foodX && snakeY === foodY) {
       snakeBody.push([foodX, foodY]);
@@ -47,16 +58,13 @@ const gameLoop = () => {
 
 /**
  * A helper function to update the position of the food
- * If the potential position overlaps with the snake head, the food position is recalculate until this is not the case.
  */
 const updateFoodPosition = () => {
   let newFoodX: number;
   let newFoodY: number;
 
-  do {
-    newFoodX = blockSize * Math.floor(Math.random() * cols);
-    newFoodY = blockSize * Math.floor(Math.random() * rows);
-  } while (newFoodX === snakeX && newFoodY === snakeY);
+  newFoodX = blockSize * Math.floor(Math.random() * cols);
+  newFoodY = blockSize * Math.floor(Math.random() * rows);
 
   foodX = newFoodX;
   foodY = newFoodY;
