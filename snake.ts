@@ -24,12 +24,13 @@ const gameLoop = () => {
     context.fillStyle = "black";
     context.fillRect(0, 0, board.width, board.height);
 
-    // Draw the snake
+    // Draw the snake's head
     snakeX += directionX * blockSize;
     snakeY += directionY * blockSize;
     context.fillStyle = "lime";
     context.fillRect(snakeX, snakeY, blockSize, blockSize);
 
+    // Draw the snake's body
     for (let i = 0; i < snakeBody.length; i++) {
       context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
     }
