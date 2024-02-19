@@ -7,6 +7,8 @@ var context;
 // Snake Information
 var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
+var directionX = 1;
+var directionY = 0;
 // Food Information
 var foodX = blockSize * 10;
 var foodY = blockSize * 10;
@@ -17,10 +19,11 @@ var gameLoop = function () {
         context.fillStyle = "black";
         context.fillRect(0, 0, board.width, board.height);
         // Draw the snake
+        snakeX += directionX * blockSize;
+        snakeY += directionY * blockSize;
         context.fillStyle = "lime";
         context.fillRect(snakeX, snakeY, blockSize, blockSize);
         // Draw the food
-        updateFoodPos();
         context.fillStyle = "red";
         context.fillRect(foodX, foodY, blockSize, blockSize);
     }
@@ -29,7 +32,7 @@ var gameLoop = function () {
  * A helper function to update the position of the food
  * If the potential position overlaps with the snake head, the food position is recalculate until this is not the case.
  */
-var updateFoodPos = function () {
+var updateFoodPosition = function () {
     var newFoodX;
     var newFoodY;
     do {
@@ -39,6 +42,28 @@ var updateFoodPos = function () {
     foodX = newFoodX;
     foodY = newFoodY;
 };
+/**
+ * Updates the global variables representing the direction vector of the snake based on the recently pressed key.
+ * Note: The positive y-axis is defined as downwards, and negative y-axis is defined as upwards.
+ * @param e The keyup event containing information about the recently pressed key.
+ */
+var updateSnakeDirection = function (e) {
+    var _a, _b, _c, _d;
+    switch (e.code) {
+        case "ArrowUp":
+            _a = [0, -1], directionX = _a[0], directionY = _a[1]; // Move up
+            break;
+        case "ArrowDown":
+            _b = [0, 1], directionX = _b[0], directionY = _b[1]; // Move down
+            break;
+        case "ArrowLeft":
+            _c = [-1, 0], directionX = _c[0], directionY = _c[1]; // Move left
+            break;
+        case "ArrowRight":
+            _d = [1, 0], directionX = _d[0], directionY = _d[1]; // Move right
+            break;
+    }
+};
 // Window onload event handler
 window.onload = function () {
     board = document.getElementById("board");
@@ -46,6 +71,8 @@ window.onload = function () {
         board.height = rows * blockSize;
         board.width = cols * blockSize;
         context = board.getContext("2d");
-        gameLoop();
+        document.addEventListener("keyup", updateSnakeDirection);
+        updateFoodPosition();
+        setInterval(gameLoop, 100); // 100ms
     }
 };
