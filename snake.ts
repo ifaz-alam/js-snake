@@ -1,5 +1,5 @@
 // Constants for board dimensions and block size
-const [rows, cols]: [number, number] = [20, 10];
+const [rows, cols]: [number, number] = [20, 20];
 const blockSize: number = 25;
 
 // Variables for canvas and its context
@@ -19,7 +19,6 @@ let foodY: number = blockSize * 10;
 
 // Function to update canvas content (main game loop)
 const gameLoop = () => {
-  console.log(snakeBody);
   if (context && board) {
     // Clear the canvas
     context.fillStyle = "black";
@@ -45,6 +44,8 @@ const gameLoop = () => {
       context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
     }
 
+    checkFailed();
+
     // Consume food
     if (snakeX === foodX && snakeY === foodY) {
       snakeBody.push([foodX, foodY]);
@@ -53,6 +54,29 @@ const gameLoop = () => {
     // Draw the food
     context.fillStyle = "red";
     context.fillRect(foodX, foodY, blockSize, blockSize);
+  }
+};
+
+/**
+ * A helper function to check if the Game is in a Fail state
+ * The conditions for failing are:
+ *	- 1. Going out of bounds
+ * 	- 2. Having the snake head intersect with its body part
+ */
+const checkFailed = () => {
+  if (
+    snakeX < 0 ||
+    snakeX > cols * blockSize ||
+    snakeY < 0 ||
+    snakeY > rows * blockSize
+  ) {
+    alert("Game Over");
+  }
+
+  for (let i = 0; i < snakeBody.length; i++) {
+    if (snakeX === snakeBody[i][0] && snakeY === snakeBody[i][1]) {
+      alert("Game Over");
+    }
   }
 };
 
@@ -104,6 +128,7 @@ window.onload = () => {
     document.addEventListener("keyup", updateSnakeDirection);
 
     updateFoodPosition();
+
     setInterval(gameLoop, 100); // 100ms
   }
 };
