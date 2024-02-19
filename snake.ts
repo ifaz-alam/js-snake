@@ -7,12 +7,12 @@ let board: HTMLCanvasElement | null;
 let context: CanvasRenderingContext2D | null;
 
 // Snake Information
-let snakeX = blockSize * 5;
-let snakeY = blockSize * 5;
+let snakeX: number = blockSize * 5;
+let snakeY: number = blockSize * 5;
 
 // Food Information
-let foodX = blockSize * 10;
-let foodY = blockSize * 10;
+let foodX: number = blockSize * 10;
+let foodY: number = blockSize * 10;
 
 // Function to update canvas content (main game loop)
 const gameLoop = () => {
@@ -37,16 +37,16 @@ const gameLoop = () => {
  * If the potential position overlaps with the snake head, the food position is recalculate until this is not the case.
  */
 const updateFoodPos = () => {
-  let newFoodX = blockSize * Math.floor(Math.random() * cols);
-  let newFoodY = blockSize * Math.floor(Math.random() * rows);
+  let newFoodX: number;
+  let newFoodY: number;
 
-  if (newFoodX == foodX && newFoodY == foodY) {
+  do {
     newFoodX = blockSize * Math.floor(Math.random() * cols);
     newFoodY = blockSize * Math.floor(Math.random() * rows);
-  } else {
-    foodX = newFoodX;
-    foodY = newFoodY;
-  }
+  } while (newFoodX === snakeX && newFoodY === snakeY);
+
+  foodX = newFoodX;
+  foodY = newFoodY;
 };
 
 // Window onload event handler

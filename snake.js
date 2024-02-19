@@ -30,16 +30,14 @@ var gameLoop = function () {
  * If the potential position overlaps with the snake head, the food position is recalculate until this is not the case.
  */
 var updateFoodPos = function () {
-    var newFoodX = blockSize * Math.floor(Math.random() * cols);
-    var newFoodY = blockSize * Math.floor(Math.random() * rows);
-    if (newFoodX == foodX && newFoodY == foodY) {
+    var newFoodX;
+    var newFoodY;
+    do {
         newFoodX = blockSize * Math.floor(Math.random() * cols);
         newFoodY = blockSize * Math.floor(Math.random() * rows);
-    }
-    else {
-        foodX = newFoodX;
-        foodY = newFoodY;
-    }
+    } while (newFoodX === snakeX && newFoodY === snakeY);
+    foodX = newFoodX;
+    foodY = newFoodY;
 };
 // Window onload event handler
 window.onload = function () {
