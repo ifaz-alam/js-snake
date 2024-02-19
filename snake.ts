@@ -9,6 +9,7 @@ let context: CanvasRenderingContext2D | null;
 // Snake Information
 let snakeX: number = blockSize * 5;
 let snakeY: number = blockSize * 5;
+let snakeBody: number[][] = [];
 let directionX: number = 1;
 let directionY: number = 0;
 
@@ -29,7 +30,12 @@ const gameLoop = () => {
     context.fillStyle = "lime";
     context.fillRect(snakeX, snakeY, blockSize, blockSize);
 
+    for (let i = 0; i < snakeBody.length; i++) {
+      context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+    }
+    // Consume food
     if (snakeX === foodX && snakeY === foodY) {
+      snakeBody.push([foodX, foodY]);
       updateFoodPosition();
     }
     // Draw the food

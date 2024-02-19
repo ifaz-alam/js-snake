@@ -7,6 +7,7 @@ var context;
 // Snake Information
 var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
+var snakeBody = [];
 var directionX = 1;
 var directionY = 0;
 // Food Information
@@ -23,7 +24,12 @@ var gameLoop = function () {
         snakeY += directionY * blockSize;
         context.fillStyle = "lime";
         context.fillRect(snakeX, snakeY, blockSize, blockSize);
+        for (var i = 0; i < snakeBody.length; i++) {
+            context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+        }
+        // Consume food
         if (snakeX === foodX && snakeY === foodY) {
+            snakeBody.push([foodX, foodY]);
             updateFoodPosition();
         }
         // Draw the food
